@@ -9,7 +9,7 @@ from .forms import ProductForm
 
 def view_product(request):
     products=Product.objects.all()
-    return render(request,'view_product.html',{'products':products})
+    return render(request,'product/view_product.html',{'products':products})
 
 
 def add_product(request):
@@ -20,7 +20,7 @@ def add_product(request):
             return redirect('product_list')
     else:
         form=ProductForm()
-    return render(request,'add_product.html',{'form':form})
+    return render(request,'product/add_product.html',{'form':form})
 
 def edit_product(request,pk):
     product=get_object_or_404(Product,pk=pk)
@@ -29,7 +29,7 @@ def edit_product(request,pk):
     if form.is_valid():
         form.save()
         return redirect('product_list')
-    return render(request,'add_product.html',{'form':form})
+    return render(request,'product/add_product.html',{'form':form})
 
 
 def delete_product(request,pk):
@@ -37,4 +37,4 @@ def delete_product(request,pk):
     if request.method=='POST':
         product.delete()
         return redirect('product_list')
-    return render(request,'conf_delete.html',{'product':product})
+    return render(request,'product/conf_delete.html',{'product':product})
