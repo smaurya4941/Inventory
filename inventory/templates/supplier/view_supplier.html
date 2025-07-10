@@ -1,0 +1,49 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+    
+        <div class="container">
+            <div class="mt-2" >
+                
+                <table class="table table-bordered ">
+                    <tr>
+                        <th style="text-align: center; vertical-align: middle;" colspan='5' ><a class="btn btn-sm btn-success p-3 " href={% url 'add_supplier' %}>Add Supplier</a></th>
+                    </tr>
+                    <tr>
+                        
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>address</th>
+                        
+                        
+                       
+                    </tr>
+                    {% for s in supplier %}
+                    <tr>
+                        
+                        <td>{{s.name}}</td>
+                        <td>{{s.contact}}</td>
+                        <td>{{s.email}}</td>
+                        <td>{{s.address}}</td>
+                        <td>
+                            <a href={% url 'edit_supplier' s.id %}><button class="btn btn-warning btn-sm">edit</button></a>
+                            <a href={% url 'delete_supplier' s.id %}><button class="btn btn-danger btn-sm">delete</button></a>
+                        </td>
+                       
+                    </tr>
+                    
+                    {% endfor %}
+                </table>
+                
+            </div>
+           
+        </div>
+    
+  
+{% endblock %}
