@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Product,Customer,Purchase,Supplier
-from .forms import ProductForm,SupplierForm
+from .forms import ProductForm,SupplierForm,PurchaseForm
 
 # Create your views here.
 
@@ -84,3 +84,38 @@ def delete_supplier(request,pk):
     return render(request,'supplier/conf_delete_supplier.html',{'supplier':supplier})
 
 
+
+
+#***********************************PURCHASE  *******************************
+#view to purchase product/items from supplier
+def purchase_list(request):
+    items=Purchase.objects.all()
+    return render(request,'purchase/purchase_list.html',{'items':items})
+
+def create_purchase(request):
+    if request.method=='POST':
+        form=PurchaseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('purchase_list')
+    else:
+        form=PurchaseForm()
+    return render(request,'purchase/purchase_product.html',{'form':form})
+
+#edit purchase 
+def edit_purchase(request,pk):
+    item=get_object_or_404(Purchase,pk=pk)
+    form=PurchaseForm(request.POST or None,instance=item)
+    if form.is_valid():
+        form.save()
+        return redirect('purchase_list')
+    return render(request,'purchase/purchase_product.html',{'form':form})
+
+
+#delete Purchase
+def delete_purchase(request,pk):
+    item=get_object_or_404(Purchase,pk=pk)
+    if request.method=='POST':
+        item.delete()
+        return redirect('purchase_list')
+    return render(request,'purchase/conf_delete_purchase.html',{'item':item})

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Deletion confirm</h1>
+<p>Are u sure to delete {{item.product.name}} bought from {{item.supplier.name}}</p>
+
+ <div class="container m-auto">
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit" class="btn btn-sm btn-danger">yes</button>
+        <a href={% url 'purchase_list' %} class="btn btn-primary btn-sm">back</a>
+    </form>
+ </div>
+
+{% endblock %}

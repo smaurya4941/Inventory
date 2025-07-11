@@ -15,5 +15,11 @@ urlpatterns = [
     path('suppliers',view_supplier,name='supplier_list'),
     path('suppliers/<int:pk>/edit/',edit_supplier,name='edit_supplier'),
     path('suppliers/<int:pk>/delete/',delete_supplier,name='delete_supplier'),
+
+    #**************PURCHASE*****************
+    path('purchase',purchase_list,name='purchase_list'),
+    path('purchase/create',create_purchase,name='create_purchase'),
+    path('purchase/<int:pk>/edit',edit_purchase,name='edit_purchase'),
+    path('purchase/<int:pk>/delete',delete_purchase,name='delete_purchase'),
     
 ]

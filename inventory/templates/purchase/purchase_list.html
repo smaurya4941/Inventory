@@ -1,0 +1,49 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+
+    
+        <div class="container">
+            <div class="mt-2" >
+                
+                <table class="table table-bordered ">
+                    <tr>
+                        <th style="text-align: center; vertical-align: middle;" colspan='5' ><a class="btn btn-sm btn-success p-3 " href={% url 'create_purchase' %}>Purchase Product</a></th>
+                    </tr>
+                    <tr>
+                        
+                        <th>Product Name</th>
+                        <th>Supplier Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                        
+                       
+                    </tr>
+                    {% for p in items %}
+                    <tr>
+                        
+                        <td>{{p.product.name}}</td>
+                        <td>{{p.supplier.name}}</td>
+                        <td>{{p.purchase_price}}</td>
+                        <td>{{p.quantity}}</td>
+                        <td>
+                            <a href={% url 'edit_purchase' p.id %}><button class="btn btn-warning btn-sm">edit</button></a>
+                            <a href={% url 'delete_purchase' p.id %}><button class="btn btn-danger btn-sm">delete</button></a>
+                        </td>
+                       
+                    </tr>
+                    
+                    {% endfor %}
+                </table>
+                
+            </div>
+           
+        </div>
+    
+  
+{% endblock %}
