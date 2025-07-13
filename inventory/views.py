@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Product,Customer,Purchase,Supplier
-from .forms import ProductForm,SupplierForm,PurchaseForm
+from .models import Product,Customer,Purchase,Supplier,Sale
+from .forms import ProductForm,SupplierForm,PurchaseForm,SaleForm
 
 # Create your views here.
 
@@ -87,11 +87,11 @@ def delete_supplier(request,pk):
 
 
 #***********************************PURCHASE  *******************************
-#view to purchase product/items from supplier
+#list all purchased items
 def purchase_list(request):
     items=Purchase.objects.all()
     return render(request,'purchase/purchase_list.html',{'items':items})
-
+#view to purchase product/items from supplier
 def create_purchase(request):
     if request.method=='POST':
         form=PurchaseForm(request.POST)
@@ -119,3 +119,57 @@ def delete_purchase(request,pk):
         item.delete()
         return redirect('purchase_list')
     return render(request,'purchase/conf_delete_purchase.html',{'item':item})
+
+
+#*******************SALES VIEWS*************************
+
+#list of all sales
+def sales_list(request):
+    product=Sale.objects.all()
+    return render(request,'sales/sales_list.html',{'product':product})
+
+#create_sales
+
+def create_sale(request):
+    if request.method=='POST':
+        form=SaleForm(request.POST)
+        if form.is_valid():
+            sale=form.save(commit=False)
+            product=sale.product
+            if product.quantity>=sale.quantity:
+                product.quantity-=sale.quantity #decreasing the sold items from remaining items
+                product.save()
+                sale.save()
+                return redirect('sales_list')
+            else:
+                form.add_error('quantity',"Not enough items available")
+    else:
+        form=SaleForm()
+    return render(request,'sales/sales_product.html',{'form':form})
+
+#edit sales
+def edit_sales(request,pk):
+    sales=get_object_or_404(Sale,pk=pk)
+    form=SaleForm(request.POST or None,instance=sales)
+    if form.is_valid():
+        form.save()
+        return redirect('sales_list')
+    return render(request,'sales/sales_product.html',{'form':form})
+
+
+#delete the sales
+def delete_sales(request,pk):
+    sale=get_object_or_404(Sale,pk=pk)
+    if request.method=='POST':
+        product=sale.product
+        product.quantity+=sale.quantity
+        product.save()
+        sale.delete()
+        return redirect('sales_list')
+    return render(request,'sales/conf_delete_sale.html',{'sale':sale})
+    
+
+#*****************************DASHBOARD ********************************
+
+def dashboard(request):
+    return render(request,'dashboard/dashboard.html')
