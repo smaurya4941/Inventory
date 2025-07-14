@@ -173,3 +173,7 @@ def delete_sales(request,pk):
 
 def dashboard(request):
     return render(request,'dashboard/dashboard.html')
+
+
+def index(request):
+    return render(request,'dashboard/index.html')

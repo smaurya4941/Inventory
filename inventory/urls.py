@@ -31,4 +31,5 @@ urlpatterns = [
 
     #************DASHBOARD*************
     path('',dashboard,name='dashboard'),
+    path('index/',index,name='index'),
 ]
