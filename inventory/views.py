@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Product,Customer,Purchase,Supplier,Sale
 from .forms import ProductForm,SupplierForm,PurchaseForm,SaleForm
-
+from django.db.models import F, Sum, FloatField
 # Create your views here.
 
 
@@ -9,8 +9,15 @@ from .forms import ProductForm,SupplierForm,PurchaseForm,SaleForm
 #********************************PRODUCTS****************************
 #view listed product
 def view_product(request):
-    products=Product.objects.all()
-    return render(request,'product/view_product.html',{'products':products})
+    query = request.GET.get('q')
+    if query:
+        products = Product.objects.filter(name__icontains=query) | Product.objects.filter(sku__icontains=query)
+    else:
+        products = Product.objects.all()
+
+    for product in products:
+        product.total_cost=product.quantity * product.price
+    return render(request,'product/view_product.html',{'products':products,'query':query})
 
 #add product
 
@@ -51,8 +58,12 @@ def delete_product(request,pk):
 
 #view listed supplier
 def view_supplier(request):
-    supplier=Supplier.objects.all()
-    return render(request,'supplier/view_supplier.html',{'supplier':supplier})
+    query=request.GET.get('q')
+    if query:
+        supplier=Supplier.objects.filter(name__icontains=query) | Supplier.objects.filter(address__icontains=query)
+    else:
+        supplier=Supplier.objects.all()
+    return render(request,'supplier/view_supplier.html',{'supplier':supplier,'query':query})
 
 #add supplier
 def add_supplier(request):
@@ -89,8 +100,13 @@ def delete_supplier(request,pk):
 #***********************************PURCHASE  *******************************
 #list all purchased items
 def purchase_list(request):
-    items=Purchase.objects.all()
-    return render(request,'purchase/purchase_list.html',{'items':items})
+    query=request.GET.get('q')
+    products = Product.objects.all()
+    if query:
+        items=Purchase.objects.filter(product__name__icontains=query) | Purchase.objects.filter(supplier__name__icontains=query)
+    else:
+        items=Purchase.objects.all()
+    return render(request,'purchase/purchase_list.html',{'items':items,'query':query,'products':products})
 #view to purchase product/items from supplier
 def create_purchase(request):
     if request.method=='POST':
@@ -125,8 +141,12 @@ def delete_purchase(request,pk):
 
 #list of all sales
 def sales_list(request):
-    product=Sale.objects.all()
-    return render(request,'sales/sales_list.html',{'product':product})
+    query=request.GET.get('q')
+    if query:
+        product=Sale.objects.filter(product__name__icontains=query) | Sale.objects.filter(customer__name__icontains=query)
+    else:
+        product=Sale.objects.all()
+    return render(request,'sales/sales_list.html',{'product':product,'query':query})
 
 #create_sales
 
@@ -171,9 +191,14 @@ def delete_sales(request,pk):
 
 #*****************************DASHBOARD ********************************
 
+
+
+
 def dashboard(request):
-    return render(request,'dashboard/dashboard.html')
-
-
-def index(request):
-    return render(request,'dashboard/index.html')
+    product=Product.objects.all()
+    prod_count=Product.objects.count()
+    total_product = Product.objects.aggregate(total=Sum('quantity'))['total'] or 0
+    total_sales = Sale.objects.aggregate(
+    total=Sum(F('quantity') * F('sale_price'), output_field=FloatField())
+)['total'] or 0
+    return render(request,'dashboard/index.html',{'product':product,'total_product':total_product,'total_sales':total_sales,'prod_count':prod_count})

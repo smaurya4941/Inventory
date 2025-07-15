@@ -20,86 +20,50 @@
         base {% endblock %} </title>
 </head>
 <body>
-   {% comment %} {% block header %}
-     nav bar
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">LOgo</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link " aria-current="page" href={% url 'dashboard' %}>Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href={% url 'product_list' %}>Products</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href={% url 'purchase_list'  %}>Purchase</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Customer</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href={% url 'sales_list' %}>Sale</a>
-              </li>
-
-              <li class="nav-item">
-                <a class="nav-link" href={% url 'supplier_list' %}>Suppliers</a>
-              </li>
-              
-              
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav>
-      {% endblock %}
-
-     {% endcomment %}
-
+  
 
      {% block header %}
      <!--SIDEBAR-->
      <section id="sidebar">
-      <a href="#" class="brand">
+      <a  href="#" class="brand">
         <i class='bx bxs-smile'></i>
-        <span class="text">AdminHub</span>
+        <span class="text">Inventory</span>
       </a>
       <ul class="side-menu top">
-        <li class="active">
-          <a href="#">
+        <li class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" >
+          <a class="btn btn-sm btn-primary " href={% url 'dashboard' %}>
             <i class='bx bxs-dashboard' ></i>
-            <span class="text">Dashboard</span>
+            <span class="text">Home</span>
           </a>
         </li>
-        <li>
-          <a href="#">
-            <i class='bx bxs-shopping-bag-alt' ></i>
-            <span class="text">My Store</span>
+        <li  class="{% if request.resolver_match.url_name == 'product_list' %}active{% endif %}">
+          <a  class="btn btn-sm btn-primary " href={% url 'product_list' %}>
+            <i class='bx  bx-store'  ></i> 
+            <span class="text">My Products</span>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li class="{% if request.resolver_match.url_name == 'purchase_list' %}active{% endif %}">
+          <a class="btn btn-sm btn-primary " href={% url 'purchase_list'  %}>
             <i class='bx bxs-doughnut-chart' ></i>
-            <span class="text">Analytics</span>
+            <span class="text">Purchases</span>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li class="{% if request.resolver_match.url_name == 'sales_list' %}active{% endif %}"  >
+          <a class="btn btn-sm btn-primary" href={% url 'sales_list' %}>
             <i class='bx bxs-message-dots' ></i>
-            <span class="text">Message</span>
+            <span class="text">Sales</span>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li class="{% if request.resolver_match.url_name == 'customer_list' %}active{% endif %}">
+          <a class="btn btn-sm btn-primary " href="#">
             <i class='bx bxs-group' ></i>
-            <span class="text">Team</span>
+            <span class="text">Customers</span>
+          </a>
+        </li>
+        <li class="{% if request.resolver_match.url_name == 'supplier_list' %}active{% endif %}">
+          <a class="btn btn-sm btn-primary" href={% url 'supplier_list' %}>
+            <i class='bx bxs-group' ></i>
+            <span class="text">Suppliers</span>
           </a>
         </li>
       </ul>
@@ -119,14 +83,43 @@
       </ul>
     </section>
          <!--SIDEBAR-->
-     
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+		<nav>
+			<i class='bx bx-menu' ></i>
+			<a href="#" class="nav-link">Categories</a>
+			<form action="#">
+				<div class="form-input">
+					<input type="search" placeholder="Search...">
+					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+				</div>
+			</form>
+			<input type="checkbox" id="switch-mode" hidden>
+			<label for="switch-mode" class="switch-mode"></label>
+			<a href="#" class="notification">
+				<i class='bx bxs-bell' ></i>
+				<span class="num">8</span>
+			</a>
+			<a href="#" class="profile">
+				<img src="img/people.png">
+			</a>
+		</nav>
+		<!-- NAVBAR -->
+    {% block content %}
+    
+    {% endblock %}
+		
+	</section>
+	<!-- CONTENT -->
+	
      {% endblock %}
 
 
-   {% block content %}
-                
-   {% endblock %}
-  
+
    {% block extra_js %}
    <script src='{% static "js/script.js" %}'></script>
    {% endblock %}
