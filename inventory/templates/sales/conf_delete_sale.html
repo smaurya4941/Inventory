@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Deletion confirm</h1>
-<p>Are u sure to delete {{sale.product.name}} sold to {{sale.customer.name}}</p>
+<div class="bg-light d-flex align-items-center" style="height: 80vh;">
 
- <div class="container m-auto">
-    
-    <form action="" method="post">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit" class="btn btn-sm btn-danger">yes</button>
-        <a href={% url 'purchase_list' %} class="btn btn-primary btn-sm">back</a>
-    </form>
- </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <h3 class="text-danger mb-4">Are you sure you want to delete?</h3>
+                        <p class="fs-5"><strong >{{sale.product.name}} </strong>sold to<strong>  {{sale.customer.name}}</strong></p>
 
+                        <form method="post" class="mt-4">
+                            {% csrf_token %}
+                            {{ form }}
+                            <button type="submit" class="btn btn-danger me-2">Yes, Delete</button>
+                            <a href="{% url 'sales_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
