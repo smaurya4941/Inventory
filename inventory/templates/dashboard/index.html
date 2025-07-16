@@ -10,47 +10,59 @@
 	
 
 	<ul class="box-info mt-0">
-		<li>
+		<li >
 			<i class='bx bxs-calendar-check' ></i>
 			<span class="text">
-				<h3>{{prod_count}}+</h3>
-				<p> Products</p>
+				<a href={% url 'product_list' %} class="aaaa">
+					<h3>{{prod_count}}+</h3>
+					<p> Products</p>
+				</a>
 			</span>
 		</li>
 		<li>
 			<i class='bx bxs-group' ></i>
 			<span class="text">
-				<h3>{{sales_count}}+</h3>
+				<a  href={% url 'sales_list' %}>
+					<h3>{{sales_count}}+</h3>
 				<p>Total Sales</p>
+				</a>
 			</span>
 		</li>
 		<li>
 			<i class='bx bxs-group' ></i>
 			<span class="text">
-				<h3>{{customer_count}}+</h3>
+				<a href="#">
+					<h3>{{customer_count}}+</h3>
 				<p>Customer</p>
+				</a>
 			</span>
 		</li>
 		<li>
 			<i class='bx bxs-group' ></i>
 			<span class="text">
-				<h3>{{supplier_count}}+</h3>
+				<a  href={% url 'supplier_list' %}>
+					<h3>{{supplier_count}}+</h3>
 				<p>Suppliers</p>
+				</a>
 			</span>
 		</li>
 		<li>
 			<i class='bx bxs-dollar-circle' ></i>
 			<span class="text">
-				<h3>{{purchase_count}}+</h3>
+				<a href={% url 'purchase_list'  %}>
+					<h3>{{purchase_count}}+</h3>
 				<p>Purchased items</p>
+				</a>
 			</span>
 		</li>
 
 		<li>
 			<i class='bx bxs-dollar-circle' ></i>
 			<span class="text">
-				<h3>Coming Soon..+</h3>
+				<a href="#">
+					<h3>Coming Soon..+</h3>
 				<p>...</p>
+				</a>
 			</span>
 		</li>
 		

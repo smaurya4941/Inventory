@@ -2,7 +2,13 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import Product,Customer,Purchase,Supplier,Sale
 from .forms import ProductForm,SupplierForm,PurchaseForm,SaleForm
 from django.db.models import F, Sum, FloatField
+from django.contrib import messages
+from django.urls import reverse
 # Create your views here.
+
+
+#**********************ITEMS*******************************
+
 
 
 
@@ -11,7 +17,7 @@ from django.db.models import F, Sum, FloatField
 def view_product(request):
     query = request.GET.get('q')
     if query:
-        products = Product.objects.filter(name__icontains=query) | Product.objects.filter(sku__icontains=query)
+        products = Product.objects.filter(name__name__icontains=query) | Product.objects.filter(sku__icontains=query)
     else:
         products = Product.objects.all()
 
@@ -109,14 +115,40 @@ def purchase_list(request):
     return render(request,'purchase/purchase_list.html',{'items':items,'query':query,'products':products})
 #view to purchase product/items from supplier
 def create_purchase(request):
-    if request.method=='POST':
-        form=PurchaseForm(request.POST)
+    if request.method == 'POST':
+        form = PurchaseForm(request.POST)
         if form.is_valid():
-            form.save()
+            purchase = form.save()
+
+            # Get purchased Item and quantity
+            purchased_item = purchase.product  # This is your Items model
+            purchased_quantity = purchase.quantity
+            purchase_price = purchase.purchase_price
+
+            # Check if this Item exists in Product
+            existing_product = Product.objects.filter(name=purchased_item).first()
+
+            if existing_product:
+                # Update quantity if Product already exists
+                existing_product.quantity += purchased_quantity
+                existing_product.save()
+                messages.success(request, f"Stock updated for '{purchased_item.name}'.")
+            else:
+                # Create new Product if not exists
+                Product.objects.create(
+                    name=purchased_item,
+                    sku=f"{purchased_item.name[:3].upper()}-{purchased_item.id}",
+                    description='Auto-created from purchase',
+                    price=purchase_price,
+                    quantity=purchased_quantity
+                )
+                messages.success(request, f"New Product created for '{purchased_item.name}'.")
+
             return redirect('purchase_list')
     else:
-        form=PurchaseForm()
-    return render(request,'purchase/purchase_product.html',{'form':form})
+        form = PurchaseForm()
+
+    return render(request, 'purchase/purchase_product.html', {'form': form})
 
 #edit purchase 
 def edit_purchase(request,pk):
@@ -143,7 +175,7 @@ def delete_purchase(request,pk):
 def sales_list(request):
     query=request.GET.get('q')
     if query:
-        product=Sale.objects.filter(product__name__icontains=query) | Sale.objects.filter(customer__name__icontains=query)
+        product=Sale.objects.filter(product__name__name__icontains=query) | Sale.objects.filter(customer__name__icontains=query)
     else:
         product=Sale.objects.all()
     return render(request,'sales/sales_list.html',{'product':product,'query':query})
@@ -227,4 +259,4 @@ def dashboard(request):
                                                   'supplier':supplier,'supplier_count':supplier_count,
                                                   'purchase':purchase,'purchase_count':purchase_count})
 
-#view for recent order or recent sold products
+

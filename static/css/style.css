@@ -333,7 +333,7 @@ body {
 	align-items: center;
 	grid-gap: 24px;
 }
-#content main .box-info li .bx {
+#content main .box-info li  .bx {
 	width: 80px;
 	height: 80px;
 	border-radius: 10px;
@@ -364,13 +364,16 @@ body {
 	color: var(--orange);
 }
 
-#content main .box-info li .text h3 {
+#content main .box-info li .text a h3 {
 	font-size: 24px;
 	font-weight: 600;
 	color: var(--dark);
 }
-#content main .box-info li .text p {
+#content main .box-info li .text a p {
 	color: var(--dark);	
+}
+#content main .box-info li .text a  {
+	text-decoration: none;
 }
 
 
