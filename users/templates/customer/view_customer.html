@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static "css/viewTable.css" %}">
+{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- Search & Add Custoer Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
+        <form method="get" class="d-flex flex-grow-1 me-md-3" style="max-width: 500px; width: 100%;">
+            <input type="text" name="q" placeholder="Search by name or email..." value="{{ query }}" class="form-control me-2 shadow-sm" />
+            <button type="submit" class="btn btn-outline-primary">
+                Search
+            </button>
+        </form>
+
+        <a href="#" class="btn btn-success btn-sm px-4 py-2 shadow-sm">
+            + Add Customer
+        </a>
+    </div>
+
+    <!-- Customer Table Section -->
+    <div class="card shadow rounded">
+        <div class="card-body">
+            <h5 class="card-title mb-4 text-center">Customer List</h5>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered text-center align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>email</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in customer %}
+                        <tr>
+                            <td>{{ c.name }}</td>
+                            <td>{{ c.email }}</td>
+                            <td>{{ c.address }}</td>
+                            
+                            <td class="d-flex justify-content-center gap-2">
+                                <a href="#" class="btn btn-warning btn-sm px-3">Edit</a>
+                                <a href="#" class="btn btn-danger btn-sm px-3">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+  
+{% endblock %}
