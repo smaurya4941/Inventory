@@ -196,9 +196,35 @@ def delete_sales(request,pk):
 
 def dashboard(request):
     product=Product.objects.all()
-    prod_count=Product.objects.count()
+    sales=Sale.objects.all()
+    customer=Customer.objects.all()
+    supplier=Supplier.objects.all()
+    purchase=Purchase.objects.all()
+    #Counting of each models items
+    prod_count=product.count()
+    sales_count=sales.count()
+    customer_count=customer.count()
+    supplier_count=supplier.count()
+    purchase_count=purchase.count()
+
+    # counting total prices of all quantity of individual model
+
     total_product = Product.objects.aggregate(total=Sum('quantity'))['total'] or 0
     total_sales = Sale.objects.aggregate(
     total=Sum(F('quantity') * F('sale_price'), output_field=FloatField())
 )['total'] or 0
-    return render(request,'dashboard/index.html',{'product':product,'total_product':total_product,'total_sales':total_sales,'prod_count':prod_count})
+    #recent orders
+    salesByDate = Sale.objects.all().order_by('-sale_date')[:3]
+    #top selling producst
+    topSelling=Sale.objects.all().order_by('-quantity')[:3]
+    #out of stock products
+    outOfStock=Product.objects.filter(quantity=0)
+    #low stock product
+    lowStockProducts = Product.objects.filter(quantity__lt=10).order_by('quantity')
+    return render(request,'dashboard/index.html',{'product':product,'prod_count':prod_count,'outOfStock':outOfStock,'lowStockProducts':lowStockProducts,
+                                                  'sales':sales,'sales_count':sales_count,'salesByDate': salesByDate,'topSelling':topSelling,
+                                                  'customer':customer,'customer_count':customer_count,
+                                                  'supplier':supplier,'supplier_count':supplier_count,
+                                                  'purchase':purchase,'purchase_count':purchase_count})
+
+#view for recent order or recent sold products

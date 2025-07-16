@@ -3,152 +3,128 @@
 
 
 
-
-
-
-
 {% block content %}
 
 <!-- MAIN -->
 <main>
-	<div class="head-title">
-		<div class="left">
-			<h1>Dashboard</h1>
-			<ul class="breadcrumb">
-				<li>
-					<a href="#">Dashboard</a>
-				</li>
-				<li><i class='bx bx-chevron-right' ></i></li>
-				<li>
-					<a class="active" href="#">Home</a>
-				</li>
-			</ul>
-		</div>
-		<a href="#" class="btn-download">
-			<i class='bx bxs-cloud-download' ></i>
-			<span class="text">Download PDF</span>
-		</a>
-	</div>
+	
 
-	<ul class="box-info">
+	<ul class="box-info mt-0">
 		<li>
 			<i class='bx bxs-calendar-check' ></i>
 			<span class="text">
-				<h3>{{total_product}}</h3>
-				<p>Total Products</p>
+				<h3>{{prod_count}}+</h3>
+				<p> Products</p>
 			</span>
 		</li>
 		<li>
 			<i class='bx bxs-group' ></i>
 			<span class="text">
-				<h3>{{total_sales}}</h3>
+				<h3>{{sales_count}}+</h3>
 				<p>Total Sales</p>
 			</span>
 		</li>
 		<li>
-			<i class='bx bxs-dollar-circle' ></i>
+			<i class='bx bxs-group' ></i>
 			<span class="text">
-				<h3>{{prod_count}}</h3>
-				<p>Product</p>
+				<h3>{{customer_count}}+</h3>
+				<p>Customer</p>
+			</span>
+		</li>
+		<li>
+			<i class='bx bxs-group' ></i>
+			<span class="text">
+				<h3>{{supplier_count}}+</h3>
+				<p>Suppliers</p>
 			</span>
 		</li>
 		<li>
 			<i class='bx bxs-dollar-circle' ></i>
 			<span class="text">
-				<h3>{{prod_count}}</h3>
-				<p>Product</p>
+				<h3>{{purchase_count}}+</h3>
+				<p>Purchased items</p>
 			</span>
 		</li>
+
+		<li>
+			<i class='bx bxs-dollar-circle' ></i>
+			<span class="text">
+				<h3>Coming Soon..+</h3>
+				<p>...</p>
+			</span>
+		</li>
+		
 	</ul>
 
 
 	<div class="table-data">
+		<!--Recent Orders-->
 		<div class="order">
 			<div class="head">
-				<h3>Recent Orders</h3>
+				<h5>Recent Orders</h5>
 				<i class='bx bx-search' ></i>
 				<i class='bx bx-filter' ></i>
 			</div>
 			<table>
 				<thead>
 					<tr>
-						<th>User</th>
-						<th>Date Order</th>
-						<th>Status</th>
+						<th>Product Name</th>
+						<th>Created At</th>
+						<th>Customer Name</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for p in salesByDate %}
 					<tr>
-						<td>
-							<img src="img/people.png">
-							<p>John Doe</p>
-						</td>
-						<td>01-10-2021</td>
-						<td><span class="status completed">Completed</span></td>
+						<td>{{ p.product.name }}</td>
+						<td>{{ p.sale_date }}</td>
+						<td>{{p.customer.name}}</td>
+						
 					</tr>
+					{% empty %}
 					<tr>
-						<td>
-							<img src="img/people.png">
-							<p>John Doe</p>
-						</td>
-						<td>01-10-2021</td>
-						<td><span class="status pending">Pending</span></td>
+						<td colspan="2">No recent products found.</td>
 					</tr>
-					<tr>
-						<td>
-							<img src="img/people.png">
-							<p>John Doe</p>
-						</td>
-						<td>01-10-2021</td>
-						<td><span class="status process">Process</span></td>
-					</tr>
-					<tr>
-						<td>
-							<img src="img/people.png">
-							<p>John Doe</p>
-						</td>
-						<td>01-10-2021</td>
-						<td><span class="status pending">Pending</span></td>
-					</tr>
-					<tr>
-						<td>
-							<img src="img/people.png">
-							<p>John Doe</p>
-						</td>
-						<td>01-10-2021</td>
-						<td><span class="status completed">Completed</span></td>
-					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
+			
 		</div>
+		<!--Recent ordrs-->
+		<!--Top selling Products-->
 		<div class="todo">
 			<div class="head">
-				<h3>Todos</h3>
+				<h5>Top Selling Products</h5>
 				<i class='bx bx-plus' ></i>
 				<i class='bx bx-filter' ></i>
 			</div>
+			{% for p in topSelling %}
 			<ul class="todo-list">
-				<li class="completed">
-					<p>Todo List</p>
-					<i class='bx bx-dots-vertical-rounded' ></i>
-				</li>
-				<li class="completed">
-					<p>Todo List</p>
-					<i class='bx bx-dots-vertical-rounded' ></i>
-				</li>
-				<li class="not-completed">
-					<p>Todo List</p>
-					<i class='bx bx-dots-vertical-rounded' ></i>
-				</li>
-				<li class="completed">
-					<p>Todo List</p>
-					<i class='bx bx-dots-vertical-rounded' ></i>
-				</li>
-				<li class="not-completed">
-					<p>Todo List</p>
-					<i class='bx bx-dots-vertical-rounded' ></i>
+				<li class="completed">	
+					<p>{{p.product.name}}</p> <h5 class="mx-2">{{p.quantity}}</h5>
 				</li>
 			</ul>
+			{% endfor %}
+		</div>
+
+		<!--todo 2-->
+		<div class="todo">
+			<div class="head">
+				<h5> Out of Stock Products</h5>
+				<i class='bx bx-plus' ></i>
+				<i class='bx bx-filter' ></i>
+			</div>
+			{% for p in lowStockProducts %}
+			<ul class="todo-list">
+				<li class="completed">
+					<p>{{p.name}}</p> <h5 class="mx-2">{{p.quantity}}</h5>
+					{% comment %} <i class='bx bx-dots-vertical-rounded' ></i> {% endcomment %}
+				</li>
+				
+			</ul>
+			
+			{% endfor %}
+			
 		</div>
 	</div>
 </main>
