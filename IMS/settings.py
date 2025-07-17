@@ -85,10 +85,23 @@ WSGI_APPLICATION = 'IMS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+#Uding PosgreSQL Database
+DATABASES={
+    'default':{
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':'inventory_django_app',
+        'USER':'postgres',
+        'PASSWORD':'Sachin',
+        'HOST':'localhost',
+        'PORT':5432
+
     }
 }
 
@@ -138,3 +151,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Authentication 
+LOGIN_REDIRECT_URL='dashboard'
+LOGOUT_REDIRECT_URL='login'

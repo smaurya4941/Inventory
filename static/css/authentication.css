@@ -1,0 +1,31 @@
+.parent {
+    background-color: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+.login-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+.login-container h2 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+.btn-primary {
+    width: 100%;
+}
+.form-text a {
+    color: #007bff;
+    text-decoration: none;
+}
+.form-text a:hover {
+    text-decoration: underline;
+}

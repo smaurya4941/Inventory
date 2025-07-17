@@ -1,4 +1,6 @@
+
 {% load static %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <!--data-bs-theme="dark"-->
 <html lang="en" >
@@ -88,25 +90,41 @@
 	<!-- CONTENT -->
 	<section id="content">
 		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="#" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num">8</span>
-			</a>
-			<a href="#" class="profile">
-				<img src="img/people.png">
-			</a>
-		</nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm px-4">
+      <i class='bx bx-menu fs-3 text-white me-3' id="sidebarToggle"></i>
+      <a class="navbar-brand fw-bold" href="#">Inventory App</a>
+  
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav align-items-center">
+              {% if user.is_authenticated %}
+                  <li class="nav-item me-3">
+                      <span class="navbar-text text-white">
+                          Welcome, {{ user.username }}!
+                      </span>
+                  </li>
+                  <li class="nav-item">
+                      <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-outline-light">Logout</button>
+                      </form>
+                  </li>
+              {% else %}
+                  <li class="nav-item me-2">
+                      <a class="btn btn-outline-light" href="{% url 'login' %}">Sign In</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="btn btn-light" href="{% url 'register' %}">Register</a>
+                  </li>
+              {% endif %}
+          </ul>
+      </div>
+  </nav>
+  
+  
 		<!-- NAVBAR -->
     {% block content %}
     
