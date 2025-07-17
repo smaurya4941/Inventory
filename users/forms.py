@@ -16,3 +16,7 @@ class AddCustomer(forms.ModelForm):
     class Meta:
         model=Customer
         fields='__all__'
+        widgets = {
+                    'address': forms.Textarea(attrs={'rows': 4,  'cols': 40,  'placeholder': 'Add Address  here...'}),
+                    'email':forms.EmailInput(attrs={ 'placeholder': 'Enter your email  here...'  }),
+        }
