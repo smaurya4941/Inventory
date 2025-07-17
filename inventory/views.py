@@ -4,6 +4,7 @@ from .forms import ProductForm,SupplierForm,PurchaseForm,SaleForm
 from django.db.models import F, Sum, FloatField
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -14,6 +15,7 @@ from django.urls import reverse
 
 #********************************PRODUCTS****************************
 #view listed product
+
 def view_product(request):
     query = request.GET.get('q')
     if query:
@@ -26,7 +28,7 @@ def view_product(request):
     return render(request,'product/view_product.html',{'products':products,'query':query})
 
 #add product
-
+@login_required
 def add_product(request):
     if request.method=='POST':
         form=ProductForm(request.POST)
@@ -38,6 +40,7 @@ def add_product(request):
     return render(request,'product/add_product.html',{'form':form})
 
 #edit product
+@login_required
 def edit_product(request,pk):
     product=get_object_or_404(Product,pk=pk)
     # print(product.name)
@@ -49,6 +52,7 @@ def edit_product(request,pk):
 
 
 #delete product
+@login_required
 def delete_product(request,pk):
     product=get_object_or_404(Product,pk=pk)
     if request.method=='POST':
@@ -72,6 +76,7 @@ def view_supplier(request):
     return render(request,'supplier/view_supplier.html',{'supplier':supplier,'query':query})
 
 #add supplier
+@login_required
 def add_supplier(request):
     if request.method=='POST':
         form=SupplierForm(request.POST)
@@ -83,6 +88,7 @@ def add_supplier(request):
     return render(request,'supplier/add_supplier.html',{'form':form})
 
 #edit supplier
+@login_required
 def edit_supplier(request,pk):
     supplier=get_object_or_404(Supplier,pk=pk)
     form=SupplierForm(request.POST or None,instance=supplier)
@@ -93,6 +99,7 @@ def edit_supplier(request,pk):
 
 
 #delete supplier
+@login_required
 def delete_supplier(request,pk):
     supplier=get_object_or_404(Supplier,pk=pk)
     if request.method=='POST':
@@ -105,6 +112,7 @@ def delete_supplier(request,pk):
 
 #***********************************PURCHASE  *******************************
 #list all purchased items
+
 def purchase_list(request):
     query=request.GET.get('q')
     products = Product.objects.all()
@@ -114,6 +122,7 @@ def purchase_list(request):
         items=Purchase.objects.all()
     return render(request,'purchase/purchase_list.html',{'items':items,'query':query,'products':products})
 #view to purchase product/items from supplier
+@login_required
 def create_purchase(request):
     if request.method == 'POST':
         form = PurchaseForm(request.POST)
@@ -151,6 +160,7 @@ def create_purchase(request):
     return render(request, 'purchase/purchase_product.html', {'form': form})
 
 #edit purchase 
+@login_required
 def edit_purchase(request,pk):
     item=get_object_or_404(Purchase,pk=pk)
     form=PurchaseForm(request.POST or None,instance=item)
@@ -161,6 +171,7 @@ def edit_purchase(request,pk):
 
 
 #delete Purchase
+@login_required
 def delete_purchase(request,pk):
     item=get_object_or_404(Purchase,pk=pk)
     if request.method=='POST':
@@ -181,7 +192,7 @@ def sales_list(request):
     return render(request,'sales/sales_list.html',{'product':product,'query':query})
 
 #create_sales
-
+@login_required
 def create_sale(request):
     if request.method=='POST':
         form=SaleForm(request.POST)
@@ -200,6 +211,7 @@ def create_sale(request):
     return render(request,'sales/sales_product.html',{'form':form})
 
 #edit sales
+@login_required
 def edit_sales(request,pk):
     sales=get_object_or_404(Sale,pk=pk)
     form=SaleForm(request.POST or None,instance=sales)
@@ -210,6 +222,7 @@ def edit_sales(request,pk):
 
 
 #delete the sales
+@login_required
 def delete_sales(request,pk):
     sale=get_object_or_404(Sale,pk=pk)
     if request.method=='POST':
