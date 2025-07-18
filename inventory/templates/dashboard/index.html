@@ -113,7 +113,7 @@
 			{% for p in topSelling %}
 			<ul class="todo-list">
 				<li class="completed">	
-					<p>{{p.product.name}}</p> <h5 class="mx-2">{{p.quantity}}</h5>
+					<p>{{ p.product__name__name }}</p> <h5 class="mx-2">{{p.total_quantity}}</h5>
 				</li>
 			</ul>
 			{% endfor %}

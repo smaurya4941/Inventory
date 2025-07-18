@@ -260,10 +260,19 @@ def dashboard(request):
 )['total'] or 0
     #recent orders
     salesByDate = Sale.objects.all().order_by('-sale_date')[:3]
+
     #top selling producst
-    topSelling=Sale.objects.all().order_by('-quantity')[:3]
+    topSelling = Sale.objects.values('product__name__name') \
+    .annotate(total_quantity=Sum('quantity')) \
+    .order_by('-total_quantity')[:3]
+    print(topSelling)
+    # topSelling=Sale.objects.all().order_by('-quantity')[:3] # it gives the duplicates sales item 
+
+
     #out of stock products
     outOfStock=Product.objects.filter(quantity=0)
+
+    
     #low stock product
     lowStockProducts = Product.objects.filter(quantity__lt=10).order_by('quantity')
     return render(request,'dashboard/index.html',{'product':product,'prod_count':prod_count,'outOfStock':outOfStock,'lowStockProducts':lowStockProducts,

@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-99h6h1$0_!i#5k_sggh=a!%^xwag$ex*v83kfub)dff9b*=+$t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://inventory-ywaz.onrender.com','inventory-ywaz.onrender.com','http://127.0.0.1:8000/']
+ALLOWED_HOSTS = ['https://inventory-ywaz.onrender.com','inventory-ywaz.onrender.com','127.0.0.1']
 
 
 # Application definition
