@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 #Crsipy form and bootstrap
 
@@ -85,26 +88,10 @@ WSGI_APPLICATION = 'IMS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
-#Uding PosgreSQL Database
 DATABASES={
-    'default':{
-        'ENGINE':'django.db.backends.postgresql',
-        'NAME':'inventory_django_app',
-        'USER':'postgres',
-        'PASSWORD':'Sachin',
-        'HOST':'localhost',
-        'PORT':5432
-
-    }
+    'default':dj_database_url.parse(config('DATABASE_URL'))
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -145,6 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 
 
 # Default primary key field type
