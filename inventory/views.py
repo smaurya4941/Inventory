@@ -5,6 +5,7 @@ from django.db.models import F, Sum, FloatField
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail#method jiske under saara email content likhenege
 # Create your views here.
 
 
@@ -17,6 +18,8 @@ from django.contrib.auth.decorators import login_required
 #view listed product
 
 def view_product(request):
+    if not request.user.is_authenticated:
+        return redirect('first')
     query = request.GET.get('q')
     if query:
         products = Product.objects.filter(name__name__icontains=query) | Product.objects.filter(sku__icontains=query)
@@ -68,6 +71,8 @@ def delete_product(request,pk):
 
 #view listed supplier
 def view_supplier(request):
+    if not request.user.is_authenticated:
+        return redirect('first')
     query=request.GET.get('q')
     if query:
         supplier=Supplier.objects.filter(name__icontains=query) | Supplier.objects.filter(address__icontains=query)
@@ -114,6 +119,8 @@ def delete_supplier(request,pk):
 #list all purchased items
 
 def purchase_list(request):
+    if not request.user.is_authenticated:
+        return redirect('first')
     query=request.GET.get('q')
     products = Product.objects.all()
     if query:
@@ -184,6 +191,9 @@ def delete_purchase(request,pk):
 
 #list of all sales
 def sales_list(request):
+    
+    if not request.user.is_authenticated:
+        return redirect('first')
     query=request.GET.get('q')
     if query:
         product=Sale.objects.filter(product__name__name__icontains=query) | Sale.objects.filter(customer__name__icontains=query)
@@ -224,6 +234,7 @@ def edit_sales(request,pk):
 #delete the sales
 @login_required
 def delete_sales(request,pk):
+    
     sale=get_object_or_404(Sale,pk=pk)
     if request.method=='POST':
         product=sale.product
@@ -240,6 +251,9 @@ def delete_sales(request,pk):
 
 
 def dashboard(request):
+    if not request.user.is_authenticated:  ###isse agar ek jagah se logout ho to har window me logout kr dega
+        return redirect('first')
+
     product=Product.objects.all()
     sales=Sale.objects.all()
     customer=Customer.objects.all()
@@ -265,7 +279,7 @@ def dashboard(request):
     topSelling = Sale.objects.values('product__name__name') \
     .annotate(total_quantity=Sum('quantity')) \
     .order_by('-total_quantity')[:3]
-    print(topSelling)
+    # print(topSelling)
     # topSelling=Sale.objects.all().order_by('-quantity')[:3] # it gives the duplicates sales item 
 
 
@@ -280,5 +294,15 @@ def dashboard(request):
                                                   'customer':customer,'customer_count':customer_count,
                                                   'supplier':supplier,'supplier_count':supplier_count,
                                                   'purchase':purchase,'purchase_count':purchase_count})
+
+
+def first_page(request):
+    return render(request,'dashboard/first.html')
+
+
+
+
+
+
 
 

@@ -17,10 +17,11 @@
                 Search
             </button>
         </form>
-
+        {% if user.is_superuser %}
         <a href="{% url 'add_product' %}" class="btn btn-success btn-sm px-4 py-2 shadow-sm">
             + Add Product
         </a>
+        {% endif %}
     </div>
 
     <!-- Product Table Section -->
