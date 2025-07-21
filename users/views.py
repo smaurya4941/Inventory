@@ -79,7 +79,7 @@ def activate(request,uidb64,token):
     if user is not  None and token_generator.check_token(user,token):
         user.is_active=True
         user.save()
-        return HttpResponse("Your email is verified and account is activated")
+        return render(request,'authentication/activation_success.html')
     else:
         return HttpResponse("Link Invalid or expired")
 

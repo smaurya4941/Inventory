@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verified</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gradient-to-r from-green-400 to-blue-500">
+    <div class="bg-white p-10 rounded-2xl shadow-lg text-center">
+        <h1 class="text-4xl font-bold text-green-600 mb-4">🎉 Congratulations!</h1>
+        <p class="text-gray-700 text-lg mb-6">Your email has been successfully verified and your account is now active.</p>
+        <a href={% url 'first' %} class="inline-block px-6 py-2 bg-green-500 text-white font-semibold rounded-full hover:bg-green-600 transition duration-300">Go to Homepage</a>
+    </div>
+</body>
+</html>
