@@ -130,3 +130,11 @@ def send_email(request):
         )
         return render(request,'authentication/mail_sent.html')
     return render(request,'authentication/send_email.html')
+
+
+
+
+
+#CONTACT ME
+def contact_me(request):
+    return render(request,'contact/contactme')
