@@ -5,6 +5,7 @@ from django.db.models import F, Sum, FloatField
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.core.mail import send_mail#method jiske under saara email content likhenege
 # Create your views here.
 
@@ -20,12 +21,22 @@ from django.core.mail import send_mail#method jiske under saara email content li
 def view_product(request):
     if not request.user.is_authenticated:
         return redirect('first')
-    query = request.GET.get('q')
+    query = request.GET.get('q')  #search property==>url se GET karenge ==>q
+    sort=request.GET.get('sort')
+    # print(sort)
+    products=Product.objects.all()
+    #search features
     if query:
-        products = Product.objects.filter(name__name__icontains=query) | Product.objects.filter(sku__icontains=query)
+        products = products.filter(name__name__icontains=query) | products.filter(sku__icontains=query)
     else:
-        products = Product.objects.all()
+        products =products
 
+    #filtering 
+    valid_sort_fields = ['name__name', '-name__name', 'price', '-price', 'quantity', '-quantity']
+    if sort in valid_sort_fields:
+        products=products.order_by(sort)
+    else:
+        products=products
     for product in products:
         product.total_cost=product.quantity * product.price
     return render(request,'product/view_product.html',{'products':products,'query':query})
@@ -73,12 +84,18 @@ def delete_product(request,pk):
 def view_supplier(request):
     if not request.user.is_authenticated:
         return redirect('first')
+    supplier=Supplier.objects.all()
     query=request.GET.get('q')
     if query:
-        supplier=Supplier.objects.filter(name__icontains=query) | Supplier.objects.filter(address__icontains=query)
-    else:
-        supplier=Supplier.objects.all()
-    return render(request,'supplier/view_supplier.html',{'supplier':supplier,'query':query})
+        supplier=supplier.filter(name__icontains=query) | supplier.filter(address__icontains=query)
+    
+    #sorting
+    sort=request.GET.get('sort')
+    valid_sort_fields=['name','-name']
+    if sort in valid_sort_fields:
+        supplier=supplier.order_by(sort)
+        
+    return render(request,'supplier/view_supplier.html',{'supplier':supplier,'query':query,'sort':sort})
 
 #add supplier
 @login_required
@@ -122,12 +139,18 @@ def purchase_list(request):
     if not request.user.is_authenticated:
         return redirect('first')
     query=request.GET.get('q')
-    products = Product.objects.all()
+   #search featiures
+    purchases=Purchase.objects.all()
     if query:
-        items=Purchase.objects.filter(product__name__icontains=query) | Purchase.objects.filter(supplier__name__icontains=query)
-    else:
-        items=Purchase.objects.all()
-    return render(request,'purchase/purchase_list.html',{'items':items,'query':query,'products':products})
+        purchases=purchases.filter(supplier__name__icontains=query)|purchases.filter(product__name__icontains=query)
+
+    #ordering
+    valid_sort_fields=['product__name','-product__name','purchase_price','-purchase_price','quantity','-quantity']
+    sort=request.GET.get('sort')
+    if sort in valid_sort_fields:
+        purchases=purchases.order_by(sort)
+   
+    return render(request,'purchase/purchase_list.html',{'query':query,'purchases':purchases,'sort':sort})
 #view to purchase product/items from supplier
 @login_required
 def create_purchase(request):
@@ -191,16 +214,26 @@ def delete_purchase(request,pk):
 
 #list of all sales
 def sales_list(request):
-    
     if not request.user.is_authenticated:
         return redirect('first')
-    query=request.GET.get('q')
-    if query:
-        product=Sale.objects.filter(product__name__name__icontains=query) | Sale.objects.filter(customer__name__icontains=query)
-    else:
-        product=Sale.objects.all()
-    return render(request,'sales/sales_list.html',{'product':product,'query':query})
 
+    query = request.GET.get('q')
+    sort = request.GET.get('sort')
+    sales=Sale.objects.all()
+
+    if query:
+        sales = sales.filter(customer__name__icontains=query) | sales.filter(product__name__name__icontains=query)
+    else:
+        sales =sales
+
+    #filtering 
+    valid_sort_fields = ['product__name__name', '-product__name__name', 'sale_price', '-sale_price', 'quantity', '-quantity']
+    if sort in valid_sort_fields:
+        sales=sales.order_by(sort)
+    else:
+        sales=sales
+    
+    return render(request,'sales/sales_list.html',{'sales':sales,'query':query})
 #create_sales
 @login_required
 def create_sale(request):

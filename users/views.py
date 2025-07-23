@@ -15,8 +15,21 @@ from .forms import AddCustomer
 
 #******************CUSTOMER***************
 def view_customer(request):
+    if not request.user.is_authenticated:
+        return redirect('first')
+    
     customer=Customer.objects.all()
-    return render(request,'customer/view_customer.html',{'customer':customer})
+    #search feature
+    query=request.GET.get('q')
+    if query:
+        customer=customer.filter(name__icontains=query)
+    
+    #sort
+    sort=request.GET.get('sort')
+    valid_sort_fields=['name','-name']
+    if sort in valid_sort_fields:
+        customer=customer.order_by(sort)
+    return render(request,'customer/view_customer.html',{'customer':customer,'query':query,'sort':sort})
 
 def registerUser(request):
     if request.method=='POST':
