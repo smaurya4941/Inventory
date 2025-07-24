@@ -1,152 +1,127 @@
 {% extends "base.html" %}
 {% load static %}
 
-
-
 {% block content %}
-
-<!-- MAIN -->
 <main>
-	
+  <ul class="box-info mt-0">
+    <li>
+      <i class='bx bxs-calendar-check'></i>
+      <span class="text">
+        <a href={% url 'product_list' %} class="info-link">
+          <h3>{{prod_count}}+</h3>
+          <p>Products</p>
+        </a>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-group'></i>
+      <span class="text">
+        <a href={% url 'sales_list' %} class="info-link">
+          <h3>{{sales_count}}+</h3>
+          <p>Total Sales</p>
+        </a>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-group'></i>
+      <span class="text">
+        <a href={% url 'view_customer' %} class="info-link">
+          <h3>{{customer_count}}+</h3>
+          <p>Customers</p>
+        </a>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-truck'></i>
+      <span class="text">
+        <a href={% url 'supplier_list' %} class="info-link">
+          <h3>{{supplier_count}}+</h3>
+          <p>Suppliers</p>
+        </a>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-dollar-circle'></i>
+      <span class="text">
+        <a href={% url 'purchase_list' %} class="info-link">
+          <h3>{{purchase_count}}+</h3>
+          <p>Purchased Items</p>
+        </a>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-bulb'></i>
+      <span class="text">
+        <a href="#" class="info-link">
+          <h3>Coming Soon...</h3>
+          <p>Feature</p>
+        </a>
+      </span>
+    </li>
+  </ul>
 
-	<ul class="box-info mt-0">
-		<li >
-			<i class='bx bxs-calendar-check' ></i>
-			<span class="text">
-				<a href={% url 'product_list' %} class="aaaa">
-					<h3>{{prod_count}}+</h3>
-					<p> Products</p>
-				</a>
-			</span>
-		</li>
-		<li>
-			<i class='bx bxs-group' ></i>
-			<span class="text">
-				<a  href={% url 'sales_list' %}>
-					<h3>{{sales_count}}+</h3>
-				<p>Total Sales</p>
-				</a>
-			</span>
-		</li>
-		<li>
-			<i class='bx bxs-group' ></i>
-			<span class="text">
-				<a href={% url 'view_customer'%}>
-					<h3>{{customer_count}}+</h3>
-				<p>Customer</p>
-				</a>
-			</span>
-		</li>
-		<li>
-			<i class='bx bxs-group' ></i>
-			<span class="text">
-				<a  href={% url 'supplier_list' %}>
-					<h3>{{supplier_count}}+</h3>
-				<p>Suppliers</p>
-				</a>
-			</span>
-		</li>
-		<li>
-			<i class='bx bxs-dollar-circle' ></i>
-			<span class="text">
-				<a href={% url 'purchase_list'  %}>
-					<h3>{{purchase_count}}+</h3>
-				<p>Purchased items</p>
-				</a>
-			</span>
-		</li>
+  <div class="table-data">
+    <div class="order">
+      <div class="head">
+        <h5>Recent Orders</h5>
+        <i class='bx bx-search'></i>
+        <i class='bx bx-filter'></i>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Created At</th>
+            <th>Customer Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in salesByDate %}
+          <tr>
+            <td>{{ p.product.name }}</td>
+            <td>{{ p.sale_date }}</td>
+            <td>{{ p.customer.name }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3">No recent products found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-		<li>
-			<i class='bx bxs-dollar-circle' ></i>
-			<span class="text">
-				<a href="#">
-					<h3>Coming Soon..+</h3>
-				<p>...</p>
-				</a>
-			</span>
-		</li>
-		
-	</ul>
+    <div class="todo">
+      <div class="head">
+        <h5>Top Selling Products</h5>
+        <i class='bx bx-plus'></i>
+        <i class='bx bx-filter'></i>
+      </div>
+      <ul class="todo-list">
+        {% for p in topSelling %}
+        <li class="completed">
+          <p>{{ p.product__name__name }}</p>
+          <h5 class="mx-2">{{ p.total_quantity }}</h5>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-
-	<div class="table-data">
-		<!--Recent Orders-->
-		<div class="order">
-			<div class="head">
-				<h5>Recent Orders</h5>
-				<i class='bx bx-search' ></i>
-				<i class='bx bx-filter' ></i>
-			</div>
-			<table>
-				<thead>
-					<tr>
-						<th>Product Name</th>
-						<th>Created At</th>
-						<th>Customer Name</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for p in salesByDate %}
-					<tr>
-						<td>{{ p.product.name }}</td>
-						<td>{{ p.sale_date }}</td>
-						<td>{{p.customer.name}}</td>
-						
-					</tr>
-					{% empty %}
-					<tr>
-						<td colspan="2">No recent products found.</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-			
-		</div>
-		<!--Recent ordrs-->
-		<!--Top selling Products-->
-		<div class="todo">
-			<div class="head">
-				<h5>Top Selling Products</h5>
-				<i class='bx bx-plus' ></i>
-				<i class='bx bx-filter' ></i>
-			</div>
-			{% for p in topSelling %}
-			<ul class="todo-list">
-				<li class="completed">	
-					<p>{{ p.product__name__name }}</p> <h5 class="mx-2">{{p.total_quantity}}</h5>
-				</li>
-			</ul>
-			{% endfor %}
-		</div>
-
-		<!--todo 2-->
-		<div class="todo">
-			<div class="head">
-				<h5> Out of Stock Products</h5>
-				<i class='bx bx-plus' ></i>
-				<i class='bx bx-filter' ></i>
-			</div>
-			{% for p in lowStockProducts %}
-			<ul class="todo-list">
-				<li class="completed">
-					<p>{{p.name}}</p> <h5 class="mx-2">{{p.quantity}}</h5>
-					{% comment %} <i class='bx bx-dots-vertical-rounded' ></i> {% endcomment %}
-				</li>
-				
-			</ul>
-			
-			{% endfor %}
-			
-		</div>
-	</div>
+    <div class="todo">
+      <div class="head">
+        <h5>Out of Stock Products</h5>
+        <i class='bx bx-plus'></i>
+        <i class='bx bx-filter'></i>
+      </div>
+      <ul class="todo-list">
+        {% for p in lowStockProducts %}
+        <li class="not-completed">
+          <p>{{ p.name }}</p>
+          <h5 class="mx-2">{{ p.quantity }}</h5>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 </main>
-<!-- MAIN -->
-
-
-	
-	
-	
-	{% endblock %}
-
-</body>
-</html>
+{% endblock %}

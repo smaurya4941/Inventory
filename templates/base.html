@@ -76,20 +76,19 @@
       </ul>
       <ul class="side-menu">
         <li>
-          <a href="#">
+          <a class="btn btn-sm btn-primary" href="{%url 'first' %}#contact">
             <i class='bx bxs-cog' ></i>
-            <span class="text">Settings</span>
+            <span class="text">contact</span>
           </a>
         </li>
         {% if user.is_authenticated %}
         <li>
-          <a href="#" class="logout">
-            <i class='bx bxs-log-out-circle' ></i>
-            <form method="POST" action="{% url 'logout' %}" class="d-inline">
-              {% csrf_token %}
-              <button type="submit" class="btn ">Logout</button>
+          <form method="POST" action="{% url 'logout' %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-danger px-5 py-2 m-3 logout">
+              <i class='bx bxs-log-out-circle'></i> Logout
+            </button>
           </form>
-          </a>
         </li>
         {% endif %}
       </ul>
@@ -103,7 +102,7 @@
 		<!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm px-4">
       <i class='bx bx-menu fs-3 text-white me-3' id="sidebarToggle"></i>
-      <a class="navbar-brand fw-bold" href="#">Inventory App</a>
+      <a class="navbar-brand fw-bold" href="#">InventoryPro</a>
   
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>

@@ -22,24 +22,22 @@ def view_product(request):
     if not request.user.is_authenticated:
         return redirect('first')
     query = request.GET.get('q')  #search property==>url se GET karenge ==>q
-    sort=request.GET.get('sort')
-    # print(sort)
+   
     products=Product.objects.all()
     #search features
     if query:
         products = products.filter(name__name__icontains=query) | products.filter(sku__icontains=query)
-    else:
-        products =products
 
-    #filtering 
+    #filtering
+    sort=request.GET.get('sort')
+    # print(sort)
     valid_sort_fields = ['name__name', '-name__name', 'price', '-price', 'quantity', '-quantity']
     if sort in valid_sort_fields:
         products=products.order_by(sort)
-    else:
-        products=products
+    
     for product in products:
         product.total_cost=product.quantity * product.price
-    return render(request,'product/view_product.html',{'products':products,'query':query})
+    return render(request,'product/view_product.html',{'products':products,'query':query,'sort':sort})
 
 #add product
 @login_required
@@ -233,7 +231,7 @@ def sales_list(request):
     else:
         sales=sales
     
-    return render(request,'sales/sales_list.html',{'sales':sales,'query':query})
+    return render(request,'sales/sales_list.html',{'sales':sales,'query':query,'sort':sort})
 #create_sales
 @login_required
 def create_sale(request):
@@ -330,6 +328,23 @@ def dashboard(request):
 
 
 def first_page(request):
+    if request.method=='POST':
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        message=request.POST.get('message')
+        full_message=f'message received from {name} via {email} :\n \n{message}'
+
+        send_mail(
+            subject=f'new contact message from {name}',
+            message=full_message,
+            from_email=email,
+            recipient_list= ['smaurya2274@gmail.com'],
+            fail_silently=False,
+
+        )
+
+        messages.success(request,'Your email has been sent')
+        return redirect('/#contact')
     return render(request,'dashboard/first.html')
 
 
@@ -341,3 +356,9 @@ def first_page(request):
 
 
 
+
+
+#*********************CONTACT ME USING THE FORM***********************
+
+# def contact(request):
+   

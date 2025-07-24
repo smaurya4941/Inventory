@@ -16,8 +16,8 @@
     
             <select name="sort" class="form-select me-2 shadow-sm" onchange="this.form.submit()" style="max-width: 150px;">
                 <option value="" >Sort</option>
-                <option value="product__name__name" {% if request.GET.sort == 'product__name__name' %}selected{% endif %}>A - Z</option>
-                <option value="-product__name__name" {% if request.GET.sort == '-product__name__name' %}selected{% endif %}>Z - A</option>
+                <option value="name__name" {% if request.GET.sort == 'name__name' %}selected{% endif %}>A - Z</option>
+                <option value="-name__name" {% if request.GET.sort == '-name__name' %}selected{% endif %}>Z - A</option>
               
                 <option value="quantity" {% if request.GET.sort == 'quantity' %}selected{% endif %}>qunatity low to high</option>
                 <option value="-quantity" {% if request.GET.sort == '-quantity' %}selected{% endif %}>quantity high to low</option>

@@ -32,4 +32,8 @@ urlpatterns = [
     #************DASHBOARD*************
     path('dashboard/',dashboard,name='dashboard'),      
     path('',first_page,name='first'),      
+
+
+    #***********contact me*********
+    # path('contact/',contact,name='contact'),
 ]

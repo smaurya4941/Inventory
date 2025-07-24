@@ -178,11 +178,14 @@
         <div class="row justify-content-center">
           <div class="col-lg-6">
             <h3 class="fw-bold text-center mb-4">Contact Us</h3>
-            <form>
+    
+            <form method="POST">
+              {% csrf_token %}
               <div class="mb-3">
                 <input
                   type="text"
                   class="form-control"
+                  name="name"
                   placeholder="Your Name"
                   required
                 />
@@ -191,6 +194,7 @@
                 <input
                   type="email"
                   class="form-control"
+                  name="email"
                   placeholder="Your Email"
                   required
                 />
@@ -198,6 +202,7 @@
               <div class="mb-3">
                 <textarea
                   class="form-control"
+                  name="message"
                   rows="4"
                   placeholder="Your Message"
                   required
@@ -209,11 +214,17 @@
                 </button>
               </div>
             </form>
+    
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-success mt-3">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
           </div>
         </div>
       </div>
     </section>
-
+    
     <!-- Footer -->
     <footer class="footer text-center">
       <div class="container">
