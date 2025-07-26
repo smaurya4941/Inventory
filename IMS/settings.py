@@ -26,16 +26,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['https://inventory-ywaz.onrender.com','inventory-ywaz.onrender.com','127.0.0.1']
-# ALLOWED_HOSTS=[]
+# ALLOWED_HOSTS = ['https://inventory-ywaz.onrender.com','inventory-ywaz.onrender.com','127.0.0.1']
+ALLOWED_HOSTS=[]
 
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
+    'rest_framework',
      'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',
@@ -44,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'inventory',
     'users',
 ]
@@ -74,7 +75,10 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = f"InventoryPro <{EMAIL_HOST_USER}>"
 
-
+#REST FRAMEWORK]
+REST_FRAMEWORK={
+    'DATETIME_FORMAT':"%d-%m-%Y  %H:%M"
+}
 
 
 ROOT_URLCONF = 'IMS.urls'
@@ -103,15 +107,15 @@ WSGI_APPLICATION = 'IMS.wsgi.application'
 
 
                 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-DATABASES={
-    'default':dj_database_url.parse(config('DATABASE_URL'))
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+# DATABASES={
+#     'default':dj_database_url.parse(config('DATABASE_URL'))
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

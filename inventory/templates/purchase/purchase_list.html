@@ -26,10 +26,11 @@
         </select>
             <button type="submit" class="btn btn-outline-primary">Search</button>
         </form>
-
+        {% if user.is_superuser %}
         <a href="{% url 'create_purchase' %}" class="btn btn-success btn-sm px-4 py-2 shadow-sm">
             + Purchase Product
         </a>
+        {% endif %}
     </div>
 
     <!-- Purchase Table -->
