@@ -10,4 +10,10 @@ router.register('purchaseapi',views.PurchaseViewsets,basename='purchaseapi')
 router.register('supplierapi',views.SupplierViewsets,basename='supplierapi')
 router.register('userapi',views.UserViewsets,basename='userapi')
 
-urlpatterns =router.urls
+
+
+urlpatterns=[
+   path('',include(router.urls)),
+   path('auth/',include('rest_framework.urls',namespace='rest_framework')), #for manual login logout
+]
+

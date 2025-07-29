@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - InventoryPro</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            padding: 40px;
+        }
+
+        .invoice-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-header h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #343a40;
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+
+        .table th {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #e9ecef;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container invoice-box">
+    <div class="d-flex justify-content-between align-items-center mb-4 invoice-header">
+        <div>
+            <h1>Invoice</h1>
+            <p><strong>Date:</strong> {{ sale.created_at }}</p>
+        </div>
+        <div class="text-end company-name">
+            InventoryPro
+            <div style="font-size: 14px; font-weight: normal;">www.inventorypro.com</div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <h5>Bill To:</h5>
+        <p>
+            <strong>{{ sale.customer.name }}</strong><br>
+            {{ sale.customer.email }}
+        </p>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price per Item</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>Rs {{ sale.sale_price }}</td>
+                <td>Rs {{ total_price }}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="3" class="text-end">Grand Total:</td>
+                <td>Rs {{ total_price }}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mt-4 text-center no-print">
+    <a href={% url 'generate_invoice' sale.id %}> <button  class="btn btn-primary">Print Invoice</button></a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -67,4 +67,4 @@ class Sale(models.Model):
     sale_date=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.customer.name
+        return f' {self.customer.name}-{self.product.name}'

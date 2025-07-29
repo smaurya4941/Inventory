@@ -11,6 +11,7 @@ from django.utils.encoding import force_bytes,force_str
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.urls import reverse
 from .forms import AddCustomer
+from .decorators import role_required
 # Create your views here.
 
 #******************CUSTOMER***************
@@ -151,3 +152,19 @@ def send_email(request):
 #CONTACT ME
 def contact_me(request):
     return render(request,'contact/contactme')
+
+
+#dashboard
+
+
+# @role_required('admin')
+def admin_dashboard(request):
+    return render(request, 'userdashboard/admin_dashboard.html')
+
+# @role_required('staff')
+def staff_dashboard(request):
+    return render(request, 'userdashboard/staff_dashboard.html')
+
+# @role_required('customer')
+def customer_dashboard(request):
+    return render(request, 'userdashboard/customer_dashboard.html')

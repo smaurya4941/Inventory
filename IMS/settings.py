@@ -77,8 +77,13 @@ DEFAULT_FROM_EMAIL = f"InventoryPro <{EMAIL_HOST_USER}>"
 
 #REST FRAMEWORK]
 REST_FRAMEWORK={
-    'DATETIME_FORMAT':"%d-%m-%Y  %H:%M"
+    'DATETIME_FORMAT':"%d-%m-%Y  %H:%M",
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
+
+#
 
 
 ROOT_URLCONF = 'IMS.urls'

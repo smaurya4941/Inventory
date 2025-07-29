@@ -44,6 +44,7 @@
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Actions</th>
+                            <th>Invoice</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,6 +57,10 @@
                             <td class="d-flex justify-content-center gap-2">
                                 <a href="{% url 'edit_sales' p.id %}" class="btn btn-warning btn-sm px-3">Edit</a>
                                 <a href="{% url 'delete_sales' p.id %}" class="btn btn-danger btn-sm px-3">Delete</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'invoice_preview' p.id %}" class="btn btn-success btn-sm px-3">Invoice</a>
+
                             </td>
                         </tr>
                         {% endfor %}

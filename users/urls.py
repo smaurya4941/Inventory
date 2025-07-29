@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import view_customer,registerUser,add_customer,edit_customer,delete_customer,send_email,activate
+from .views import view_customer,registerUser,add_customer,edit_customer,delete_customer,send_email,activate,admin_dashboard,customer_dashboard,staff_dashboard
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -29,4 +29,12 @@ urlpatterns = [
 
     #***********CONTACT ME PAGE *********************************
     # path('contact/',)
+
+
+
+
+    #***************DASHBOARD ***********
+    path('admin_dashboard/',admin_dashboard,name='admin_dashboard'),
+    path('customer_dashboard/',customer_dashboard,name='customer_dashboard'),
+    path('staff_dashboard/',staff_dashboard,name='staff_dashboard'),
 ]

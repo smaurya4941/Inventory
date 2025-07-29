@@ -7,6 +7,10 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.mail import send_mail#method jiske under saara email content likhenege
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from xhtml2pdf import pisa
+
 # Create your views here.
 
 
@@ -244,7 +248,7 @@ def create_sale(request):
                 product.quantity-=sale.quantity #decreasing the sold items from remaining items
                 product.save()
                 sale.save()
-                return redirect('sales_list')
+                return redirect('invoice_preview',{'sale':sale})
             else:
                 form.add_error('quantity',"Not enough items available")
     else:
@@ -358,7 +362,19 @@ def first_page(request):
 
 
 
-#*********************CONTACT ME USING THE FORM***********************
+#*********************DOWNLOAD INVOICE***********************
 
-# def contact(request):
-   
+
+def generate_invoice_pdf(request, sale_id):
+    sale = Sale.objects.get(id=sale_id)
+    total_price=sale.quantity *sale.sale_price
+    html = render_to_string('sales/invoice.html', {'sale': sale,'total_price':total_price})
+    response = HttpResponse(content_type='application/pdf') #blank response
+    response['Content-Disposition'] = f'inline; filename="invoice_{sale.id}.pdf"'
+    pisa.CreatePDF(html, dest=response)
+    return response
+
+def invoice_preview(request,sale_id):
+    sale = Sale.objects.get(id=sale_id)
+    total_price=sale.quantity *sale.sale_price
+    return render(request,'sales/invoice_preview.html',{'sale': sale,'total_price':total_price})

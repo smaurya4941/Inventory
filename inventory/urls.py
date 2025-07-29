@@ -36,4 +36,8 @@ urlpatterns = [
 
     #***********contact me*********
     # path('contact/',contact,name='contact'),
+
+    #invoice
+    path('invoice/<int:sale_id>/', generate_invoice_pdf, name='generate_invoice'),
+    path('invoice_preview/<int:sale_id>/', invoice_preview, name='invoice_preview'),
 ]

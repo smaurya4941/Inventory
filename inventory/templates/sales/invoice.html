@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - InventoryPro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        .invoice-box {
+            width: 100%;
+            border: 0.2px solid #000;
+            
+        }
+
+        .invoice-header {
+            text-align: center;
+        }
+
+    
+        
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 0.5px solid #000;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #d3d3d3;
+        }
+
+        .total-row td {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-box">
+    <div class="invoice-header">
+        <h2>Invoice</h2>
+        <p><strong>Date:</strong> {{ sale.sale_date }}</p>
+    </div>
+
+   
+
+    <div class="section">
+        <strong>Bill To:</strong>
+        {{ sale.customer.name }}<br />
+        {{ sale.customer.email }}
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price per Item</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>Rs {{ sale.sale_price }}</td>
+                <td>Rs {{ total_price }}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="3">Grand Total</td>
+                <td>Rs {{ total_price }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+</body>
+</html>
