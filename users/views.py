@@ -12,6 +12,9 @@ from django.contrib.auth.tokens import default_token_generator as token_generato
 from django.urls import reverse
 from .forms import AddCustomer
 from .decorators import role_required
+from .models import UserProfile
+
+from .decorators import role_required
 # Create your views here.
 
 #******************CUSTOMER***************
@@ -40,7 +43,22 @@ def registerUser(request):
             user.is_active=False ##inactive rhega jbtk emailverify n ho jaaye
             # login(request,user)
             # return redirect('dashboard')
+            user.email=form.cleaned_data['email']
             user.save()
+
+            #role assign using UserProfile
+            role = form.cleaned_data['role']
+            profile = UserProfile.objects.get(user=user)
+            profile.role = role
+            profile.save()
+
+
+            #creating customret if role is customer
+            if role == 'customer':
+                try:
+                    Customer.objects.create(user=user, name=user.username, email=user.email)
+                except Exception as e:
+                    print("Failed to create customer:", e)
             #gengerating token for user
             uid=urlsafe_base64_encode(force_bytes(user.pk))
             token=token_generator.make_token(user)
@@ -78,6 +96,8 @@ def registerUser(request):
             email.attach_alternative(html_content,'text/html')
             email.send()
             return render(request,'authentication/mail_sent.html')
+        else:
+            print(form.errors) 
     else:
         form=UserRegistrationForm()
     return render(request,'authentication/registration.html',{'form':form})
@@ -108,7 +128,7 @@ def add_customer(request):
         form=AddCustomer()
     return render(request,'customer/add_customer.html',{'form':form})
 
-@login_required
+@role_required(['admin','staff'])
 def edit_customer(request,pk):
     customer=get_object_or_404(Customer,pk=pk)#accessing product with pk=pk
     if request.method=='POST':

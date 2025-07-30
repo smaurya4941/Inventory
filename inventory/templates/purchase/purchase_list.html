@@ -45,7 +45,9 @@
                             <th>Supplier Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
                             <th>Actions</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -55,10 +57,12 @@
                             <td>{{ p.supplier.name }}</td>
                             <td>₹ {{ p.purchase_price }}</td>
                             <td>{{ p.quantity }}</td>
+                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
                             <td class="d-flex justify-content-center gap-2">
                                 <a href="{% url 'edit_purchase' p.id %}" class="btn btn-warning btn-sm px-3">Edit</a>
                                 <a href="{% url 'delete_purchase' p.id %}" class="btn btn-danger btn-sm px-3">Delete</a>
                             </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>

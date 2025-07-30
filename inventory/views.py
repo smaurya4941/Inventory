@@ -248,7 +248,7 @@ def create_sale(request):
                 product.quantity-=sale.quantity #decreasing the sold items from remaining items
                 product.save()
                 sale.save()
-                return redirect('invoice_preview',{'sale':sale})
+                return redirect('invoice_preview',sale_id=sale.id)
             else:
                 form.add_error('quantity',"Not enough items available")
     else:

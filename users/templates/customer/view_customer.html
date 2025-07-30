@@ -22,10 +22,11 @@
                 Search
             </button>
         </form>
-
+        {% if request.user.userprofile.role == "admin" %}
         <a href={% url 'add_customer' %} class="btn btn-success btn-sm px-4 py-2 shadow-sm">
             + Add Customer
         </a>
+        {% endif %}
     </div>
 
     <!-- Customer Table Section -->
@@ -39,7 +40,9 @@
                             <th>Name</th>
                             <th>email</th>
                             <th>Address</th>
+                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
                             <th>Actions</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -48,11 +51,12 @@
                             <td>{{ c.name }}</td>
                             <td>{{ c.email }}</td>
                             <td>{{ c.address }}</td>
-                            
+                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
                             <td class="d-flex justify-content-center gap-2">
                                 <a href={% url 'edit_customer' c.id %} class="btn btn-warning btn-sm px-3">Edit</a>
                                 <a href={% url 'delete_customer' c.id %} class="btn btn-danger btn-sm px-3">Delete</a>
                             </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>

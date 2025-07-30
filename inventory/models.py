@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 #Items models for listing items only
 class Items(models.Model):
@@ -35,6 +35,7 @@ class Supplier(models.Model):
 
 #creating a Customer Model
 class Customer(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
     name=models.CharField(max_length=100)
     contact=models.CharField(max_length=15, blank=True, null=True)
     email=models.EmailField(blank=True, null=True)

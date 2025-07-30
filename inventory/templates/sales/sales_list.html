@@ -24,7 +24,8 @@
             </select>
             <button type="submit" class="btn btn-outline-primary">Search</button>
         </form>
-        {% if user.is_superuser %}
+        
+        {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
         <a href="{% url 'create_sale' %}" class="btn btn-success btn-sm px-4 py-2 shadow-sm">
             + Create Sale
         </a>
@@ -43,8 +44,13 @@
                             <th>Customer Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
                             <th>Actions</th>
+                            {% endif %}
+
+                            {% if request.user.userprofile.role == "admin" %}
                             <th>Invoice</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -54,14 +60,18 @@
                             <td>{{ p.customer.name }}</td>
                             <td>₹ {{ p.sale_price }}</td>
                             <td>{{ p.quantity }}</td>
+                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
                             <td class="d-flex justify-content-center gap-2">
                                 <a href="{% url 'edit_sales' p.id %}" class="btn btn-warning btn-sm px-3">Edit</a>
                                 <a href="{% url 'delete_sales' p.id %}" class="btn btn-danger btn-sm px-3">Delete</a>
                             </td>
+                            {% endif %}
+
+                            {% if request.user.userprofile.role == "admin" %}
                             <td>
                                 <a href="{% url 'invoice_preview' p.id %}" class="btn btn-success btn-sm px-3">Invoice</a>
-
                             </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>

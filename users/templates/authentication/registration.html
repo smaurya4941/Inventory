@@ -54,6 +54,14 @@
       {% csrf_token %}
 
       <div class="mb-3">
+        <label for="id_role" class="form-label">Select Role</label>
+        {{ form.role|add_class:"form-select" }}
+        {% if form.role.errors %}
+          <div class="text-danger small">{{ form.role.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="mb-3">
         <label for="id_username" class="form-label">Username</label>
         {{ form.username|add_class:"form-control" }}
         {% if form.username.errors %}
