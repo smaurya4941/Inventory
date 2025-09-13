@@ -47,9 +47,9 @@
                             <th>Name</th>
                             <th>SKU</th>
                             <th>Quantity</th>
-                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
+                            {% comment %} {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %} {% endcomment %}
                             <th>Actions</th>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
@@ -58,12 +58,12 @@
                             <td>{{ p.name }}</td>
                             <td>{{ p.sku }}</td>
                             <td>{{ p.quantity }}</td>
-                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
+                            {% comment %} {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %} {% endcomment %}
                             <td class="d-flex justify-content-center gap-2">
                                 <a href="{% url 'edit_product' p.id %}" class="btn btn-warning btn-sm px-3">Edit</a>
                                 <a href="{% url 'delete_product' p.id %}" class="btn btn-danger btn-sm px-3">Delete</a>
                             </td>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                         </tr>
                         {% endfor %}
                     </tbody>

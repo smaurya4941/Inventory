@@ -36,9 +36,9 @@
                             <th>Contact</th>
                             <th>Email</th>
                             <th>Address</th>
-                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
+                            {% comment %} {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %} {% endcomment %}
                             <th>Actions</th>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                         </tr>
                     </thead>
                     <tbody>
@@ -48,12 +48,12 @@
                             <td>{{ s.contact }}</td>
                             <td>{{ s.email }}</td>
                             <td>{{ s.address }}</td>
-                            {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %}
+                            {% comment %} {% if request.user.userprofile.role == "admin" or request.user.userprofile.role == "staff" %} {% endcomment %}
                             <td class="d-flex justify-content-center gap-2">
                                 <a href="{% url 'edit_supplier' s.id %}" class="btn btn-warning btn-sm px-3">Edit</a>
                                 <a href="{% url 'delete_supplier' s.id %}" class="btn btn-danger btn-sm px-3">Delete</a>
                             </td>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                         </tr>
                         {% endfor %}
                     </tbody>
